@@ -14,8 +14,13 @@ connectDB();
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
-app.listen(PORT, console.log(`Server Started at Port:${PORT}`));
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
+app.listen(PORT, console.log(`Server Started at Port:${PORT}`));
 app.use("/api/auth", userRoutes, profile, tasks, logout);
 app.get("/admin", protect, (req, res) => res.send("Admin Route"));
 
